@@ -1,0 +1,13 @@
+.chat {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 1200px;
+  height: 1200px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.list-chat {
+  height: 1325px;
+  background-color: #fbfbfb;
+}

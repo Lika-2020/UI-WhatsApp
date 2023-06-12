@@ -1,0 +1,41 @@
+img {
+  border-radius: 46px;
+  height: 40px;
+  width: 40px;
+}
+
+.header-listChat {
+    background-color: #edeef0;
+    height: 100px;
+    width: 500px;
+}
+
+.menu-container {
+  position: relative;
+  display: inline-block;
+  margin-top: 50px;
+}
+
+.menu-dots {
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.menu-dots::before {
+  content: '\22EE'; /* Код Unicode для вертикальных точек */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+}
+
+.header-block {
+  display: flex;
+  justify-content: space-around;
+}
+
+.header-avatar {
+    margin-top: 30px;
+}

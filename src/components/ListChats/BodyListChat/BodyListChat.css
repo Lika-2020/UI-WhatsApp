@@ -1,0 +1,42 @@
+.list-chats {
+  margin-top: 50px;
+  width: 500px;
+  height: 45px;
+ 
+}
+
+.list-item {
+  margin-left: 50px;
+}
+
+.container-listItem {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid gainsboro;
+  margin-bottom: 20px;
+}
+
+.title-span {
+  padding-left: 20px;
+}
+
+.arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(231, 166, 85, 0.849);
+  position: relative;
+  margin-left: 240px;
+}
+
+.arrow-down::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+}

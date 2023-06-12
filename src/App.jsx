@@ -1,12 +1,12 @@
 import './App.css';
+import AppRoutes from './components/Routers/AppRoutes';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header" />
+      <AppRoutes />
     </div>
   );
-  
 }
 
 export default App;
