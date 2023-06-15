@@ -9,7 +9,7 @@ import './Chat.css'
 function Chat() {
   return (
     <div className='chat'>
-      <div>
+      <div className='chat-container'>
         <HeaderMessageChat />
         <BodyMessageChat />
         <MessageInputChat />

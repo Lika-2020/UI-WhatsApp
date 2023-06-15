@@ -1,14 +1,28 @@
 .body-message {
-  background-color: rgba(250, 235, 215, 0.452);
+
+
   height: 1100px;
 }
 
 .input-block {
   display: flex;
   justify-content: center;
-  background-color: rgba(128, 128, 128, 0.158);
   border-radius: 5px;
 
+}
+
+.body-message {
+  display: inline-block;
+  margin-left: 460px
+}
+
+.message {
+  border-radius: 36px;
+  background-color: #d9fdd3;
+  width: 250px;
+  padding: 10px;
+  margin-top: 50px;
+  margin-bottom: 50px;
 
 }
 
@@ -18,24 +32,24 @@
   text-align: center;
   padding-top: 20px;
   padding-bottom: 20px;
-  margin-top: 30px;
+
 }
 
 .button {
-    position: relative;
-    color: #fff;
-    padding: 20px 20px;
-    font-size: 40px;
-    cursor: pointer;
-    margin-top: 40px;
-    margin-left: 40px;
-  }
-  
-  .button:before {
-    content: "";
-    position: absolute;
-    transform: translateY(-50%);
-    border-top: 15px solid transparent;
-    border-bottom: 15px solid transparent;
-    border-left: 15px solid  rgba(128, 128, 128, 0.842);
-  }
+  position: relative;
+  color: #fff;
+  padding: 20px 20px;
+  font-size: 40px;
+  cursor: pointer;
+  margin-top: 40px;
+  margin-left: 40px;
+}
+
+.button:before {
+  content: '';
+  position: absolute;
+  transform: translateY(-50%);
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 15px solid rgba(128, 128, 128, 0.842);
+}

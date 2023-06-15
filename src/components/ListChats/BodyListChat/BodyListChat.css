@@ -1,4 +1,9 @@
+.form-container {
+  margin-top: 20px;
+}
+
 .list-chats {
+
   margin-top: 50px;
   width: 500px;
   height: 45px;
@@ -6,15 +11,20 @@
 }
 
 .list-item {
-  margin-left: 50px;
+  margin-left: 30px;
+  margin-right: 40px;
+ 
 }
 
 .container-listItem {
+ 
   display: flex;
   align-items: center;
   border-bottom: 1px solid gainsboro;
   margin-bottom: 20px;
 }
+
+
 
 .title-span {
   padding-left: 20px;
@@ -27,7 +37,7 @@
   border-right: 10px solid transparent;
   border-top: 10px solid rgba(231, 166, 85, 0.849);
   position: relative;
-  margin-left: 240px;
+
 }
 
 .arrow-down::after {
@@ -39,4 +49,10 @@
   position: absolute;
   top: 2px;
   left: 2px;
+}
+
+.arrow-block {
+  position: absolute;
+  margin-left: 340px;
+
 }

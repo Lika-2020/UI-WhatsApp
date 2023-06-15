@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import checkCredentials from '../../../api/api';
-import { loginFailure } from '../../../store/slice/authSlice';
+import { loginFailure, loginSuccess } from '../../../store/slice/authSlice';
 
 function Form() {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ function Form() {
       if (response.error) {
         setError(response.error.message);
       } else {
+        dispatch(loginSuccess({ idInstance, apiTokenInstance }));
         navigate('/chat');
       }
     } catch (err) {
