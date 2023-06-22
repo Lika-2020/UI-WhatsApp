@@ -32,9 +32,10 @@
     outline: none;
     padding: 8px 1px;
     margin-bottom: 30px;
+    text-align: center;
   }
   
-  
+ 
   
   input::placeholder {
     color: #d0cece;
@@ -54,6 +55,7 @@
     border-radius: 46px;
     cursor: pointer;
     border: none;
+   
   }
   
   
