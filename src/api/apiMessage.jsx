@@ -1,20 +1,22 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
+const API_BASE_URL = 'https://api.green-api.com';
+
 // Создание асинхронного действия для отправки сообщения
 export const sendMessage = createAsyncThunk(
   'sendMessage',
-  async ({ idInstance, apiTokenInstance, phoneNumber, message}) => {
-    const url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
+  async ({ idInstance, apiTokenInstance, phoneNumber, message }) => {
+    const url = `${API_BASE_URL}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
 
     const payload = JSON.stringify({
       chatId: `${phoneNumber}@c.us`,
       message,
     });
 
-    console.log(payload)
+    console.log(payload);
 
-    console.log(idInstance)
-    console.log(apiTokenInstance)
+    console.log(idInstance);
+    console.log(apiTokenInstance);
 
     const headers = {
       'Content-Type': 'text/plain',
@@ -31,37 +33,35 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
-// Создание асинхронного действия для получения сообщений
-export const receiveMessages = createAsyncThunk(
-  'messages/receive',
-  async ({ idInstance, apiTokenInstance }) => {
-    const url = `https://api.green-api.com/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;
+export const deleteReceivedNotification = createAsyncThunk(
+  'notifications/delete',
+  async ({ idInstance, apiTokenInstance, receiptId }) => {
 
-    console.log(idInstance)
-    console.log(apiTokenInstance)
 
-      const response = await fetch(url);
-      const webhookBody = await response.json();
-
-    return webhookBody;
-        
+    const response = await fetch(
+      `${API_BASE_URL}/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+    const data = await response.json();
+    return data;
   }
 );
 
-export const deleteReсeivedMessage = createAsyncThunk (
-  'delete/receive',
-  async ({ idInstance, apiTokenInstance, receiptId  }) => {
- 
-    const url = `https://api.green-api.com/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`;
-    const response = await fetch(url, {
-      method: 'DELETE',
 
-    });
+// Создание асинхронного действия для получения сообщений
+export const receiveMessages = createAsyncThunk(
+  'notifications/fetch',
+  async ({ idInstance, apiTokenInstance }) => {
+    console.log(idInstance);
+    console.log(apiTokenInstance);
 
-    if (response.ok) {
-      return receiptId; 
-    } 
-    console.log(receiptId)
-    return response.json();
+    const response = await fetch(
+      `${API_BASE_URL}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`
+    );
+    const data = await response.json();
+
+    return data;
   }
-)
+);

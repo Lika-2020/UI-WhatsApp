@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { sendMessage, receiveMessages } from '../../api/apiMessage';
+import { sendMessage, receiveMessages, deleteReceivedNotification} from '../../api/apiMessage';
 
 const messageSlice = createSlice({
   name: 'message',
@@ -46,6 +46,17 @@ const messageSlice = createSlice({
       .addCase(receiveMessages.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      }) .addCase(deleteReceivedNotification.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteReceivedNotification.fulfilled, (state) => {
+        state.loading = false;
+        // Обработка успешного удаления уведомления
+      })
+      .addCase(deleteReceivedNotification.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

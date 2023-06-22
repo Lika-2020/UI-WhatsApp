@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
-import avatar from '../../../img/avatar.jpg';
 import { setPhoneNumber } from '../../../store/slice/messageSlice';
 
 
@@ -28,12 +27,12 @@ function BodyListChat() {
     <div>
       {isBlockVisible && (
         <div className="form-container">
-          <input
+          <input className='input-number'
             type="number"
             value={phoneNumberInput}
             onChange={(e) => setPhoneNumberInput(e.target.value)}
           />
-          <button type="submit" onClick={handleCreateChat}>
+          <button className='create-button' type="submit" onClick={handleCreateChat}>
             Создать
           </button>
         </div>
@@ -42,19 +41,15 @@ function BodyListChat() {
         {phoneNumbers.map((number) => (
           <div role='presentation'
             className="list-item"
-            key={number.id}
+            key={number}
             
           >
             <div className="container-listItem">
-              <div className="container-img">
-                <img src={avatar} alt="аватар" />
-              </div>
+           
               <div className="title-span">
                 <span>{number}</span>
               </div>
-              <div className="arrow-block ">
-                <div className="arrow-down" />
-              </div>
+           
             </div>
           </div>
         ))}

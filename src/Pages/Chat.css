@@ -4,11 +4,14 @@
   width: 1200px;
   height: 1200px;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 220px;
+  margin-bottom: 220px;
 }
 
 .chat-container {
-  background-color: rgba(250, 235, 215, 0.452);
+  background-color: rgb(217 161 87 / 10%);
+  height: 1325px;
+  
 }
 
 .list-chat {

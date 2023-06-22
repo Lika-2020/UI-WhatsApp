@@ -5,142 +5,149 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   sendMessage,
   receiveMessages,
-  deleteReсeivedMessage,
+  deleteReceivedNotification,
 } from '../../../api/apiMessage';
 import { selectMessages } from '../../../store/slice/messageSlice';
 
 function BodyMessageChat() {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]); // Состояние для хранения отправленных сообщений
-  // Состояние для хранения введенного сообщения
+  const [messages, setMessages] = useState([]);
+  const [notificationMessage, setNotificationMessage] = useState('');
+
   const dispatch = useDispatch();
-  const [receiptId, setReceiptId] = useState(null);
 
   const phoneNumber = useSelector(
     (state) => state.message.phoneNumber.phoneNumber
   );
-
   const incomingMessages = useSelector(selectMessages);
-  console.log(incomingMessages);
-
   const idInstance = useSelector((state) => state.auth.idInstance);
-
   const apiTokenInstance = useSelector((state) => state.auth.apiTokenInstance);
-
-  console.log(phoneNumber);
-  console.log(idInstance);
-  console.log(apiTokenInstance);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim() === '') {
-      return; // Не отправляем пустое сообщение
+      return;
     }
 
-    console.log(
-      dispatch(
-        sendMessage({ idInstance, apiTokenInstance, phoneNumber, message })
-      )
+  
+    dispatch(
+      sendMessage({ idInstance, apiTokenInstance, phoneNumber, message })
     );
 
-    // Добавление нового сообщения к списку
     setMessages((prevMessages) => [
       ...prevMessages,
       { id: prevMessages.length + 1, message },
     ]);
-    // Очищаем поле ввода после отправки сообщения
+
     setMessage('');
   };
-
-  console.log(phoneNumber);
 
   const handleChange = (e) => {
     setMessage(e.target.value);
   };
 
-  // ниже логика входящих сообщений
+  // Обработка входящих сообщений
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await dispatch(
-          receiveMessages({ idInstance, apiTokenInstance })
-        );
+    const interval = setInterval(async () => {
+      const response = await dispatch(
+        receiveMessages({ idInstance, apiTokenInstance })
+      );
+      const data = response.payload;
 
-        if (!response) {
-          return;
-        }
+      if (
+        data &&
+        data.body &&
+        data.body.messageData &&
+        'textMessageData' in data.body.messageData
+      ) {
+        const { textMessageData } = data.body.messageData;
 
-        const { body } = response;
-
-        if (!body?.messageData) {
-          await dispatch(
-            deleteReсeivedMessage({ idInstance, apiTokenInstance, receiptId })
-          );
-        } else if (body?.messageData) {
-          setReceiptId(body.receiptId);
-          incomingMessages((prevMessages) => [
-            ...prevMessages,
-            {
-              id: prevMessages.length + 1,
-              message: `RECEIVED.${body?.messageData.textMessageData?.textMessage}`,
-              receiptId: body.receiptId,
-            },
-          ]);
-          await dispatch(
-            deleteReсeivedMessage({
-              idInstance,
-              apiTokenInstance,
-              receiptId: body.receiptId,
-            })
-          );
-        } else if (body.senderData.sender === `${phoneNumber}@c.us`) {
-          await dispatch(
-            deleteReсeivedMessage({ idInstance, apiTokenInstance, receiptId })
-          );
-        }
-
-        // Обработка receiptId
-        if (receiptId) {
-          const deletedReceiptId = receiptId;
-          if (deletedReceiptId) {
-            // Удалить сообщение с receiptId из состояния incomingMessages
-            // Например, можно использовать filter для удаления сообщения с соответствующим receiptId:
-            incomingMessages((prevMessages) =>
-              prevMessages.filter((msg) => msg.receiptId !== deletedReceiptId)
+        if (textMessageData && 'textMessage' in textMessageData) {
+          const { textMessage } = textMessageData;
+          setNotificationMessage('Received message:', textMessage);
+          if (data && data.receiptId) {
+            dispatch(
+              deleteReceivedNotification({
+                idInstance,
+                apiTokenInstance,
+                receiptId: data.receiptId,
+              })
             );
+          } else {
+            return null;
+          }
+        } else {
+          setNotificationMessage('Received message: В сообщении не текст');
+          if (data && data.receiptId) {
+            dispatch(
+              deleteReceivedNotification({
+                idInstance,
+                apiTokenInstance,
+                receiptId: data.receiptId,
+              })
+            );
+          } else {
+            return null;
           }
         }
-      } catch (error) {
-        console.error(error);
-        alert('Ошибка сети, проверьте ваше подключение к интернету');
+      } else {
+        setNotificationMessage();
+        if (data && data.receiptId) {
+          dispatch(
+            deleteReceivedNotification({
+              idInstance,
+              apiTokenInstance,
+              receiptId: data.receiptId,
+            })
+          );
+        } else {
+          return null;
+        }
       }
+      return null;
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
     };
+  }, [incomingMessages, dispatch, idInstance, apiTokenInstance]);
 
-    const intervalId = setInterval(fetchMessages, 5000);
+  const renderIncomingMessages = () =>
+    incomingMessages.map((mess) => {
+      if (!mess || !mess.body) {
+        return null;
+      }
 
-    return () => clearInterval(intervalId);
-  }, [
-    dispatch,
-    idInstance,
-    apiTokenInstance,
-    phoneNumber,
-    receiveMessages,
-    deleteReсeivedMessage,
-    receiptId,
-    incomingMessages,
-  ]);
+      const { typeWebhook, messageData } = mess.body;
+
+      if (
+        typeWebhook === 'incomingMessageReceived' &&
+        messageData &&
+        messageData.textMessageData &&
+        'textMessage' in messageData.textMessageData
+      ) {
+        const { textMessage } = messageData.textMessageData;
+        return (
+          <div className="incoming-message" key={mess.body.idMessage}>
+            {textMessage}
+          </div>
+        );
+      }
+      return null;
+    });
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div className="body-message">
-          {/* Отображаем отправленные сообщения */}
           {messages.map((msg) => (
             <div className="message" key={msg.id}>
               {msg.message}
             </div>
           ))}
+          <div>{renderIncomingMessages()}</div>
+          <div>{notificationMessage}</div>
         </div>
 
         <div className="input-block">
@@ -154,11 +161,6 @@ function BodyMessageChat() {
           <button type="submit">Отправить</button>
         </div>
       </form>
-      <div>
-        {incomingMessages.map((msg) => (
-          <div key={msg.id}>{msg.message}</div>
-        ))}
-      </div>
     </div>
   );
 }

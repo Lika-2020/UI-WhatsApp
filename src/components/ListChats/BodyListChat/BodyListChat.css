@@ -1,58 +1,46 @@
 .form-container {
-  margin-top: 20px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .list-chats {
-
   margin-top: 50px;
   width: 500px;
   height: 45px;
- 
 }
 
 .list-item {
-  margin-left: 30px;
-  margin-right: 40px;
- 
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-bottom: 50px;
+  width: 300px;
 }
 
 .container-listItem {
- 
   display: flex;
   align-items: center;
-  border-bottom: 1px solid gainsboro;
+  border-bottom: 1px solid #dcdcdc7a;
   margin-bottom: 20px;
 }
 
+.create-button {
+  width: 150px;
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 5px;
 
+}
 
 .title-span {
   padding-left: 20px;
+  font-size: 20px;
 }
 
-.arrow-down {
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-top: 10px solid rgba(231, 166, 85, 0.849);
-  position: relative;
 
-}
-
-.arrow-down::after {
-  content: '';
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  position: absolute;
-  top: 2px;
-  left: 2px;
-}
-
-.arrow-block {
-  position: absolute;
-  margin-left: 340px;
-
+.input-number {
+  border-radius: 30px;
+  border-bottom: none;
+  text-align: center;
 }
